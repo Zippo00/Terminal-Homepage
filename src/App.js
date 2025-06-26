@@ -10,7 +10,6 @@ const App = () => {
   const [output, setOutput] = useState([]);
   const [commandHistory, setCommandHistory] = useState([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
-  const [isTextSelected, setIsTextSelected] = useState(false);
   
   // Refs for terminal functionality
   const inputRef = useRef(null);
@@ -29,23 +28,6 @@ const App = () => {
       terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
     }
   }, [output]);
-
-
-  // Handle text selection to pause cursor animation
-  useEffect(() => {
-    const handleSelectionChange = () => {
-      const selection = window.getSelection();
-      const hasSelection = selection && selection.toString().length >0;
-      setIsTextSelected(hasSelection);
-    };
-
-  // Listen for selection changes
-  document.addEventListener('selectionchange', handleSelectionChange);
-
-  return () => {
-    document.removeEventListener('selectionchange', handleSelectionChange);
-  };
-  }, []);
   
 
   // Welcome message on component mount
@@ -66,7 +48,7 @@ const App = () => {
     about: {
       name: 'Mikko Lempinen',
       title: 'Doctoral Reseracher',
-      bio: `I am a passionate software engineer with 5+ years of experience in full-stack development
+      bio: `I am a passionate software engineer with 3+ years of experience in full-stack development
 and machine learning research. I specialize in building scalable web applications and 
 conducting research in artificial intelligence and cyber security.
 

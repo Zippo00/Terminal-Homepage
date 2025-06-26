@@ -51,7 +51,7 @@ body {
 .dark-theme .cursor {
   /* color: #00ff00; */
   color: transparent;
-  animation: blink 1s infinite;
+  animation: blink-safe 1s infinite;
 }
 
 .dark-theme .theme-toggle {
@@ -104,7 +104,7 @@ body {
 .light-theme .cursor {
   /* color: #333333; */
   color: transparent;
-  animation: blink 1s infinite;
+  animation: blink-safe 1s infinite;
 }
 
 .light-theme .theme-toggle {
@@ -259,38 +259,46 @@ body {
   pointer-events: none; /*Prevent cursor from interfering with text selection*/
   user-select: none; /*Make cursor non-selectable*/
   position: relative;
-  display: inline-block 
+  display: inline-block;
+
+  will-change: transform; /* GPU acceleration to prevent layout disruption */
+  transform-origin: center bottom; /* Scale from bottom for better visual effect */
 }
 
-/*Pause cursor animation when text is selected*/
-.cursor.paused {
-  animation-play-state: paused;
-  visibility: visible;
+/* Use GPU-accelerated animation that won't disrupt text selection */
+.dark-theme .cursor {
+  /*color: #00ff00;*/
+  color: transparent;
+  animation: blink-safe 1s infinite;
 }
+light-theme .cursor {
+  color: #333333;
+  /*color: transparent;*/
+  animation: blink-safe 1s infinite;
+} 
+
+
 
 /* Cursor blinking animation */
 @keyframes blink {
   0%, 50% {
     /* opacity: 1; */
-    visibility: visible;
+    transform: scaleY(1);
   }
   51%, 100% {
     /* opacity: 0; */
-    visibility: hidden;
+    transform: scaleY(0);
   }
 }
-
-/*Pause cursor animation when user is selecting text*/
-.terminal:focus-within .cursor{
-  animation-play-state: paused;
-  visibility: visible;
-}
-/*Hide cursor animation when text is selected anywhere in terminal*/
-.terminal::selection .cursor,
-.terminal *::selection .cursor {
-  animation-play-state: paused;
-  visibility: hidden;
-}
+/* Alternative approach: use opacity with will-change for GPU acceleration */
+@keyframes blink-safe {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+} 
 
 /* Footer */
 .footer {
